@@ -1,0 +1,7 @@
+@inproceedings{
+    lee2023syncdiffusion,
+    title={SyncDiffusion: Coherent Montage via Synchronized Joint Diffusions},
+    author={Yuseung Lee and Kunho Kim and Hyunjin Kim and Minhyuk Sung},
+    booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+    year={2023},
+}
