@@ -1,0 +1,6 @@
+@article{lee2024reground,
+    title={ReGround: Improving Textual and Spatial Grounding at No Cost},
+    author={Lee, Yuseung and Sung, Minhyuk},
+    journal={arXiv preprint arXiv:2403.13589},
+    year={2024}
+}
