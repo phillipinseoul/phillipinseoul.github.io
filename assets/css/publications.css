@@ -84,3 +84,7 @@ blockquote { background: var(--global-bg-color); border-left: 2px solid var(--gl
     background-color: white;
     padding: 1px;
 }
+
+.pub-row {
+    margin-bottom: 0.50rem;
+}
