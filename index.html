@@ -1,353 +1,812 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <title>Phillip Y. Lee | KAIST AI</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Phillip Y. Lee | KAIST AI</title>
+<meta name="description" content="Phillip Y. Lee, PhD student at KAIST Graduate School of AI. Spatial understanding of multimodal foundation models and embodied agents.">
+<link rel="icon" media="(prefers-color-scheme:dark)" href="assets/img/favicon-dark.png" type="image/png">
+<link rel="icon" media="(prefers-color-scheme:light)" href="assets/img/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F7FA; --ink:#1B2236; --muted:#5D667A; --line:#E1E5EC;
+  --accent:#2E55E6; --sun:#F2B84B; --stage:#E6EBF3; --panel:#FFFFFF;
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Public Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141922; --ink:#E8ECF4; --muted:#9AA3B5; --line:#2A3243;
+    --accent:#8FA8FF; --stage:#1E2533; --panel:#1B212C;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141922; --ink:#E8ECF4; --muted:#9AA3B5; --line:#2A3243;
+  --accent:#8FA8FF; --stage:#1E2533; --panel:#1B212C;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+img{max-width:100%}
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The Minimal Light is a simple and elegant jekyll theme for academic personal homepage.">
+.wrap{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:64px}
 
-    <meta name="keywords" content="minimal light">
+/* profile */
+.profile{position:sticky;top:48px;align-self:start}
+.avatar{width:148px;height:197px;object-fit:cover;display:block;background:var(--stage)}
+.profile h1{font:700 30px/1.1 var(--display);letter-spacing:-.01em;margin:22px 0 4px}
+.kr{font:500 16px/1.4 "Noto Sans KR", var(--body);color:var(--muted);margin:0 0 14px}
+.role{margin:0;font-weight:600}
+.aff{margin:0 0 14px}
+.email{margin:0 0 20px;color:var(--muted);font-size:14.5px}
+.links{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;font-size:15px}
+.links a{color:var(--ink)}
+.links a:hover{color:var(--accent)}
 
+/* lab */
+.lab h2{margin-top:0}
+.stage{position:relative;aspect-ratio:16/10;min-height:330px;border-radius:22px;overflow:hidden;
+  background:radial-gradient(120% 90% at 30% 20%, color-mix(in srgb,var(--stage) 60%, var(--panel)) 0%, var(--stage) 70%)}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y}
+.stage canvas:active{cursor:grabbing}
+.inset{position:absolute;border:2px solid rgba(255,255,255,.95);border-radius:12px;pointer-events:none;
+  box-shadow:0 6px 18px rgba(27,34,54,.18)}
+.inset span{position:absolute;left:8px;top:6px;font:600 11.5px/1 var(--body);color:#1B2236;background:rgba(255,255,255,.85);padding:4px 7px;border-radius:6px}
+.hint{position:absolute;left:16px;top:14px;margin:0;font-size:13px;color:var(--muted);max-width:55%}
+.nogl .hint,.nogl .inset{display:none}
+.nogl::after{content:"This little 3D room needs WebGL, which isn't available in this browser.";position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
 
-    <link rel="canonical" href="https://minimal-light-theme.yliu.me/"/>
+.ask{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 14px}
+.ask button{font:500 14.5px/1.3 var(--body);color:var(--ink);background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+.ask button:hover{border-color:var(--accent)}
+.ask button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ask button[aria-pressed="true"]{color:#141922}}
 
+.reply{display:flex;gap:12px;align-items:flex-start}
+.reply svg{flex:0 0 40px;margin-top:2px}
+.bubble{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:12px 16px;min-height:52px}
+.bubble p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-    <link rel="icon" media="(prefers-color-scheme:dark)" href="./assets/img/favicon-dark.png" type="image/png" />
-    <link rel="icon" media="(prefers-color-scheme:light)" href="./assets/img/favicon.png" type="image/png" />
-    <script src="./assets/js/favicon-switcher.js" type="application/javascript"></script>
+/* sections */
+section{margin-top:72px}
+h2{font:600 26px/1.2 var(--display);letter-spacing:-.01em;margin:0 0 18px}
+.prose p{margin:0 0 14px;max-width:70ch}
+.prose strong{font-weight:600}
 
-    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin=anonymous>
-    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin=anonymous>
+.job{display:flex;gap:16px;align-items:center}
+.job img{width:44px;height:44px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px}
+.job p{margin:0}
+.job .when{color:var(--muted);font-size:14.5px}
 
+.news{list-style:none;margin:0;padding:0}
+.news li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding:9px 0;border-bottom:1px solid var(--line)}
+.news li:last-child{border-bottom:0}
+.news time{color:var(--muted);font-size:14.5px;font-variant-numeric:tabular-nums;padding-top:1px}
+.news li.more{display:none}
+.news.open li.more{display:grid}
+.toggle{margin-top:12px;font:600 14.5px var(--body);color:var(--accent);background:none;border:0;padding:4px 0;cursor:pointer}
 
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/publications.css">
+.pubs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:30px}
+.pub{display:grid;grid-template-columns:184px minmax(0,1fr);gap:24px;align-items:start}
+.pub img{width:100%;aspect-ratio:16/10;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px}
+.pub h3{font:600 17px/1.35 var(--body);margin:0 0 6px}
+.pub .authors{margin:0 0 4px;color:var(--muted);font-size:14.5px;line-height:1.55}
+.pub .authors a{color:var(--muted);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.pub .authors a:hover{color:var(--accent)}
+.pub .me{color:var(--ink);font-weight:600}
+.pub .venue{margin:0 0 8px;font-weight:600;font-size:14.5px}
+.pub .pl{display:flex;flex-wrap:wrap;gap:6px}
+.pub .pl a{font-size:13.5px;font-weight:500;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.pub .pl a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.note{color:var(--muted);font-size:14.5px;margin:-8px 0 22px}
 
+.plain{margin:0;padding-left:20px}
+.plain li{margin:0 0 8px}
 
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
+footer{max-width:1180px;margin:0 auto;padding:24px 32px 48px;color:var(--muted);font-size:13.5px}
 
-        <a class="image avatar"><img src="./assets/img/my-face-small.png" alt="avatar" /></a>
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:36px;padding:28px 18px}
+  .profile{position:static;display:grid;grid-template-columns:96px 1fr;column-gap:18px;align-items:center}
+  .avatar{width:96px;height:128px;grid-row:span 4}
+  .profile h1{font-size:25px;margin:0 0 2px}
+  .kr{margin:0 0 6px}
+  .aff{margin:0}
+  .email{grid-column:1/-1;margin:14px 0 0}
+  .links{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;gap:6px 18px;padding-top:12px;margin-top:12px}
+  .stage{aspect-ratio:auto;height:min(78vw,420px);min-height:300px;border-radius:18px}
+  .hint{max-width:60%;font-size:12px}
+  section{margin-top:56px}
+  .pub{grid-template-columns:110px minmax(0,1fr);gap:14px}
+  .news li{grid-template-columns:78px minmax(0,1fr);gap:10px}
+  footer{padding:20px 18px 40px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
 
-        <h2 class="name">Phillip Y. Lee</h2>
-        <h2 class="name name-kr">이유승</h2>
+<aside class="profile">
+  <img class="avatar" src="https://phillipinseoul.github.io/assets/img/my-face-small.png" alt="Phillip Y. Lee">
+  <h1>Phillip Y. Lee</h1>
+  <p class="kr">이유승</p>
+  <p class="role">PhD Student</p>
+  <p class="aff"><a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a></p>
+  <p class="email">phillip0701 (at) kaist.ac.kr</p>
+  <ul class="links">
+    <li><a href="https://scholar.google.com/citations?user=h_Jb0wcAAAAJ&hl=ko&oi=ao">Google Scholar</a></li>
+    <li><a href="https://phillipinseoul.github.io/assets/files/CV_PhillipLee.pdf">CV</a></li>
+    <li><a href="https://github.com/phillipinseoul">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/phillip-lee-6b085223a/">LinkedIn</a></li>
+    <li><a href="https://twitter.com/yuseungleee">Twitter</a></li>
+  </ul>
+</aside>
 
-        <p class="position">PhD Student</p>
+<main>
 
-        <p class="affiliation"><a href="" rel="noopener">KAIST Graduate School of AI</a></p>
+<section class="lab" style="margin-top:0" aria-label="Interactive embodied agent demo">
+  <div class="stage" id="stage">
+    <p class="hint">Drag to turn the room. Tap the floor to send the robot somewhere.</p>
+    <div class="inset" id="inset"><span>Robot's view</span></div>
+  </div>
+  <div class="ask" id="ask">
+    <button type="button" data-q="mug" aria-pressed="false">What's on the coffee table?</button>
+    <button type="button" data-q="plant" aria-pressed="false">Is the plant on the sofa's left or right?</button>
+    <button type="button" data-q="books" aria-pressed="false">How many books are on the top shelf?</button>
+    <button type="button" data-q="window" aria-pressed="false">Is the lamp or the armchair closer to the window?</button>
+    <button type="button" data-q="cat" aria-pressed="false">Where's the cat?</button>
+  </div>
+  <div class="reply">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><line x1="20" y1="3" x2="20" y2="9" stroke="#9AA3B5" stroke-width="2"/><circle cx="20" cy="4" r="3" fill="#F2B84B"/><rect x="4" y="9" width="32" height="24" rx="9" fill="#fff" stroke="#E1E5EC"/><rect x="8" y="13" width="24" height="16" rx="6" fill="#1B2236"/><rect x="13" y="17" width="4" height="7" rx="2" fill="#8EE6FF"/><rect x="23" y="17" width="4" height="7" rx="2" fill="#8EE6FF"/></svg>
+    <div class="bubble"><p id="answer" aria-hidden="true">Hi! I'm a tiny embodied agent. Ask me something about this room and I'll go look before I answer.</p></div>
+    <p class="sr" id="answer-sr" aria-live="polite"></p>
+  </div>
+</section>
 
-        <p class="email">phillip0701 (at) kaist.ac.kr</p>
+<section id="about" class="prose">
+  <h2>About me</h2>
+  <p>I am Phillip Lee, a second year PhD student at <a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a>, advised by <a href="https://mhsung.github.io/">Prof. Minhyuk Sung</a>. I am also a student researcher at <a href="https://deepmind.google/"><img src="assets/img/google_logo.png" alt="" style="height:1em;width:auto;vertical-align:-0.15em;display:inline;margin:0 2px 0 1px">Google DeepMind</a>, Mountain View. I received both my Masters and Bachelors degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>. I am also fortunate to closely collaborate with <a href="https://geometry.stanford.edu/?member=guibas">Prof. Leonidas Guibas</a>. I am a recipient of <img src="assets/img/qualcomm_logo.png" alt="" style="height:1em;width:auto;vertical-align:-0.15em;display:inline;margin:0 2px 0 1px">Qualcomm Innovation Fellowship Korea 2025.</p>
+  <p>My research interests revolve around analyzing and enhancing the <strong>spatial understanding of multimodal foundation models</strong>, with the broader goal of building truly autonomous and embodied agents capable of operating in the physical world. Specifically, I have worked on advancing the 3D spatial reasoning capabilities of vision-language models (VLMs), and enhancing the spatial control of diffusion models.</p>
+  <p>I am open to collaboration opportunities! Please feel free to contact me via email. My CV is at <a href="https://phillipinseoul.github.io/assets/files/CV_PhillipLee.pdf">Curriculum Vitae (CV)</a>.</p>
+</section>
 
-        <div class="social-icons">
-
-        <a href="https://scholar.google.com/citations?user=h_Jb0wcAAAAJ&hl=ko&oi=ao" aria-label="Google Scholar">
-          <i class="ai ai-google-scholar"></i>
-        </a>
-
-        <a href="./assets/files/CV_PhillipLee.pdf" aria-label="Curriculum Vitae">
-          <i class="ai ai-cv"></i>
-        </a>
-
-        <a href="https://github.com/phillipinseoul" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-
-        <a href="https://www.linkedin.com/in/phillip-lee-6b085223a/" aria-label="LinkedIn">
-          <i class="fab fa-linkedin"></i>
-        </a>
-
-        <a href="https://twitter.com/yuseungleee" aria-label="Twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-
-        </div>
-
-      </header>
-      <section>
-
-      <div class="block" id="about">
-        <h2 id="about-me">About Me</h2>
-
-        <p>
-          I am Phillip Lee, a second year PhD student at <a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a>, advised by <a href="https://mhsung.github.io/">Prof. Minhyuk Sung</a>.
-          I am also a student researcher at <a href="https://deepmind.google/">Google DeepMind</a>, Mountain View.
-          I received both my Masters and Bachelors degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.
-          I am also fortunate to closely collaborate with <a href="https://geometry.stanford.edu/?member=guibas">Prof. Leonidas Guibas</a>.
-          I am a recipient of Qualcomm Innovation Fellowship Korea 2025.
-        </p>
-        <p>
-          My research interests revolve around analyzing and enhancing the <b>spatial understanding of multimodal foundation models</b>,
-          with the broader goal of building truly autonomous and embodied agents capable of operating in the physical world.
-          Specifically, I have worked on advancing the 3D spatial reasoning capabilities of vision-language models (VLMs),
-          and enhancing the spatial control of diffusion models.
-        </p>
-        <p>
-          I am open to collaboration opportunities! Please feel free to contact me via email.
-          My CV is at <a href="./assets/files/CV_PhillipLee.pdf">Curriculum Vitae (CV)</a>.
-        </p>
-      </div>
-
-      <div class="block" id="experience">
-        <h2>Work Experience</h2>
-
-        <ul class="experience-list">
-          <li class="exp-item">
-            <img src="./assets/img/google_logo.png" alt="Google" class="exp-logo" />
-            <div>
-              <b>Student Researcher</b>, <a href="https://deepmind.google/">Google DeepMind</a> (Mountain View, CA)<br>
-              May 2026 - Current (Host: <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>)
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="block" id="news">
-        <h2>News</h2>
-
-        <ul class="news-list">
-          <li><strong>[Jun. 2026]</strong> <a href="https://arxiv.org/abs/2511.21415">DiverseVAR</a> is accepted to <b>ECCV 2026.</b></li>
-          <li><strong>[May. 2026]</strong> I joined <b>Google DeepMind (Mountain View)</b> as a Student Researcher, hosted by <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>.</li>
-          <li><strong>[Feb. 2026]</strong> <a href="https://token-warping-mllm.github.io/">Token Warping</a> is accepted to <b>CVPR 2026.</b></li>
-          <li><strong>[Feb. 2026]</strong> I am co-hosting the <a href="https://musi-workshop.github.io/">2nd Workshop on Multimodal Spatial Intelligence (MUSI)</a> at CVPR 2026.</li>
-          <li><strong>[Nov. 2025]</strong> I won the <a href="https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-south-korea">Qualcomm Innovation Fellowship Korea 2025</a> with our APC (ICCV 2025) paper.</li>
-          <li><strong>[Sep. 2025]</strong> <a href="https://arxiv.org/abs/2503.20240">Unconditional Priors</a> is accepted to <b>WACV 2026.</b></li>
-          <li><strong>[Jun. 2025]</strong> <a href="https://arxiv.org/abs/2504.17207">Perspective-Aware Reasoning (APC)</a> is accepted to <b>ICCV 2025.</b></li>
-          <li><strong>[Nov. 2024]</strong> I successfully defended my Masters thesis on <i><b>"Spatial Grounding with Pretrained Image Diffusion Models"</b></i>. Slides are available <a href="https://drive.google.com/file/d/1pJmHFX-0GfwhgBg4I9hHRUhMTZ2V-WzW/view?usp=drive_link">here</a>.</li>
-          <li><strong>[Oct. 2024]</strong> I gave an oral presentation on ReGround at <a href="https://sites.google.com/view/u-and-me-workshop/home/">U&ME Workshop</a> in ECCV 2024. Slides are available <a href="https://drive.google.com/file/d/1CUevPt-1NAwowoB4rBnd2WrMdCcWELGs/view?usp=drive_link">here</a>.</li>
-          <li><strong>[Sep. 2024]</strong> <a href="">GrounDiT</a> is accepted to <b>NeurIPS 2024.</b></li>
-          <li class="old-news" style="display: none;"><strong>[Jul. 2024]</strong> <a href="https://re-ground.github.io/">ReGround</a> is accepted to <b>ECCV 2024.</b></li>
-          <li class="old-news" style="display: none;"><strong>[May. 2024]</strong> <a href="https://syncdiffusion.github.io/">SyncDiffusion</a> is featured in <a href="https://www.kaist.ac.kr/kr/html/kaist/010504.html">KAIST Annual R&D Report</a> as a Research Highlight of 2023.</li>
-          <li class="old-news" style="display: none;"><strong>[Dec. 2023]</strong> I gave a spotlight presentation on SyncDiffusion at <a href="https://neuripscreativityworkshop.github.io/2023/">ML4CD Workshop</a> in NeurIPS 2023
-            and also presented at <a href="https://diffusionworkshop.github.io/">Workshop on Diffusion Models</a>.
-            Slides are available <a href="https://docs.google.com/presentation/d/1WH8XiBVTJmlosvBkcH_58Al5j4pffpSl/edit?usp=drive_link&ouid=118041686998471171133&rtpof=true&sd=true">here</a>.</li>
-          <li class="old-news" style="display: none;"><strong>[Sep. 2023]</strong> <a href="https://syncdiffusion.github.io/">SyncDiffusion</a> is accepted to <b>NeurIPS 2023.</b></li>
-          <li class="old-news" style="display: none;"><strong>[Aug. 2023]</strong> Started Master's Progam at <a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a>. (Advisor: Prof. Minhyuk Sung)</li>
-        </ul>
-        <a href="javascript:void(0);" id="see-more-btn" class="toggle-link" onclick="toggleOldNews()">[ see more ]</a>
-      </div>
-
-      <div class="block" id="publications">
-        <h2>Publications</h2>
-
-        <p class="pub-note"><span class="highlight-dot"></span>Selected publications.</p>
-
-        <div class="publications">
-        <ol class="bibliography">
-
-        <li>
-          <!-- Hidden Sensitivity-->
-          <div class="pub-row pub-selected">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/hidden_sensitivity_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">Hidden Sensitivity in Spatial Reasoning Evaluation: Diagnosis and Re-ranking with VSI-Bench</div>
-                <div class="author"><u>Phillip Y. Lee</u>, <a href="">Jin Yoo</a>, <a href="">Minseo Kim</a>, <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>
-                  , <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>Combining Theory and Benchmark (CTB) Workshop at ICML 2026</strong></em></div>
-              <div class="links">
-                <a href="https://openreview.net/pdf?id=veFSwiJogR" class="btn" role="button" target="_blank">PDF</a>
-              </div>
-            </div>
-          </div>
-          <!-- Token Warping -->
-          <div class="pub-row pub-selected">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/token-warping-thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">Token Warping Helps MLLMs Look from Nearby Viewpoints</div>
-                <div class="author"><u>Phillip Y. Lee</u>*, <a href="https://charlieppark.kr/">Chanho Park</a>*, <a href="https://uygnim99.github.io/">Mingue Park</a>, <a href="https://dvelopery0115.github.io/">Seungwoo Yoo</a>, <a href="https://63days.github.io/">Juil Koo</a>,
-                  <a href="https://mhsung.github.io/">Minhyuk Sung</a> (* equal contribution)</div>
-                <div class="periodical"><em><strong>CVPR 2026</strong></em></div>
-              <div class="links">
-                <a href="https://token-warping-mllm.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://arxiv.org/abs/2604.02870" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <!-- AVS -->
-          <div class="pub-row pub-selected">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/vgavs.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">Toward Ambulatory Vision: Learning Visually-Grounded Active View Selection</div>
-                <div class="author"><a href="https://63days.github.io/">Juil Koo</a>*, <a href="https://choidaedae.github.io/">Daehyeon Choi</a>*, <a href="https://sang-w00.github.io/">Sangwoo Youn</a>*, <u>Phillip Y. Lee</u>,
-                  <a href="https://mhsung.github.io/">Minhyuk Sung</a> (* equal contribution)</div>
-                <div class="periodical"><em><strong>Reinforcement Learning from World Feedback (RLxF) Workshop at ICML 2026</strong></em></div>
-              <div class="links">
-                <a href="https://active-view-selection.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://arxiv.org/pdf/2512.13250" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2512.13250" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <div class="pub-row">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/diversevar_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">DiverseVAR: Balancing Diversity and Quality of Next-Scale Visual Autoregressive Models</div>
-                <div class="author"><a href="">Mingue Park</a>*, <a href="https://scholar.google.com/citations?user=mmNOk74AAAAJ&hl=en">Prin Phunyaphibarn</a>*, <u>Phillip Y. Lee</u>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>ECCV 2026</strong></em></div>
-              <div class="links">
-                <a href="https://arxiv.org/abs/2511.21415" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <div class="pub-row">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/unconditional_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">Unconditional Priors Matter! Improving Conditional Generation of Fine-Tuned Diffusion Models</div>
-                <div class="author"><a href="https://scholar.google.com/citations?user=mmNOk74AAAAJ&hl=en">Prin Phunyaphibarn</a>, <u>Phillip Y. Lee</u>, <a href="https://jh27kim.github.io/">Jaihoon Kim</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>WACV 2026</strong></em></div>
-              <div class="links">
-                <a href="https://unconditional-priors-matter.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://unconditional-priors-matter.github.io/static/unconditional-priors-matter.pdf" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2503.20240" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <!-- Selected publications (always visible) -->
-          <div class="pub-row pub-selected">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/apc_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">Perspective-Aware Reasoning in Vision-Language Models via Mental Imagery Simulation</div>
-                <div class="author"><u>Phillip Y. Lee</u>, <a href="https://jihyeonje.com/">Jihyeon Je</a>, <a href="https://charlieppark.kr/">Chanho Park</a>,
-                  <a href="https://mikacuy.github.io/">Mikaela Angelina Uy</a>, <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>ICCV 2025 / Human to Robot (H2R) Workshop at CoRL 2025</strong></em></div>
-              <div class="links">
-                <a href="https://apc-vlm.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://apc-vlm.github.io/static/Perspective_Aware_Reasoning_Preprint.pdf" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2504.17207" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <div class="pub-row">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/groundit_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">GrounDiT: Grounding Diffusion Transformers via Noisy Patch Transplantation</div>
-                <div class="author"><u>Phillip Y. Lee*</u>, <a href="https://github.com/taehoon-yoon/">Taehoon Yoon</a>*, <a href="https://mhsung.github.io/">Minhyuk Sung</a> (* equal contribution)</div>
-                <div class="periodical"><em><strong>NeurIPS 2024</strong></em></div>
-              <div class="links">
-                <a href="https://groundit-diffusion.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://groundit-diffusion.github.io/static/groundit_paper.pdf" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2410.20474/" class="btn" role="button" target="_blank">arXiv</a>
-              </div>
-            </div>
-          </div>
-          <div class="pub-row">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/reground_thumbnail.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">ReGround: Improving Textual and Spatial Grounding at No Cost</div>
-                <div class="author"><u>Phillip Y. Lee</u>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>ECCV 2024</strong></em></div>
-              <div class="links">
-                <a href="https://re-ground.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://re-ground.github.io/static/reground_paper.pdf" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2403.13589/" class="btn" role="button" target="_blank">arXiv</a>
-                <a href="./assets/reground_bibtex.txt" class="btn" role="button" target="_blank">BibTex</a>
-                <a href="https://drive.google.com/file/d/1CUevPt-1NAwowoB4rBnd2WrMdCcWELGs/view" class="btn" role="button" target="_blank">Slides</a>
-              </div>
-            </div>
-          </div>
-          <div class="pub-row">
-            <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
-              <img src="./assets/img/syncdiffusion_thumbnail_v2.png" class="teaser img-fluid" />
-            </div>
-            <div class="col-sm-9" style="position:relative;padding-right:15px;padding-left:20px;">
-                <div class="title">SyncDiffusion: Coherent Montage via Synchronized Joint Diffusions</div>
-                <div class="author"><u>Phillip Y. Lee</u>, <a href="https://soulmates2.github.io/">Kunho Kim</a>, <a href="https://kormachine.github.io/">Hyunjin Kim</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></div>
-                <div class="periodical"><em><strong>NeurIPS 2023</strong></em></div>
-              <div class="links">
-                <a href="https://syncdiffusion.github.io/" class="btn" role="button" target="_blank">Project</a>
-                <a href="https://syncdiffusion.github.io/static/syncdiffusion_pdf.pdf" class="btn" role="button" target="_blank">PDF</a>
-                <a href="https://arxiv.org/abs/2306.05178/" class="btn" role="button" target="_blank">arXiv</a>
-                <a href="https://github.com/KAIST-Geometric-AI-Group/SyncDiffusion/" class="btn" role="button" target="_blank">Code</a>
-                <a href="./assets/syncdiffusion_bibtex.txt" class="btn" role="button" target="_blank">BibTex</a>
-                <a href="https://huggingface.co/spaces/KAIST-Visual-AI-Group/syncdiffusion-demo/" class="btn" role="button" target="_blank">Demo</a>
-                <a href="https://neurips.cc/virtual/2023/81374/" class="btn" role="button" target="_blank">Talk</a>
-              </div>
-            </div>
-          </div>
-        </li>
-
-        </ol>
-        </div>
-      </div>
-
-      <div class="block" id="teaching">
-        <h2>Teaching</h2>
-
-        <ul>
-          <li>Teaching Assistant, Fall 2025, <a href="https://diffusion.kaist.ac.kr/">Diffusion and Flow Models (CS492-C)</a>, KAIST</li>
-          <li>Teaching Assistant, Spring 2025, <a href="https://mhsung.github.io/kaist-cs479-spring-2025/">Machine Learning for 3D Data (CS479)</a>, KAIST</li>
-          <li>Teaching Assistant, Fall 2024, <a href="https://mhsung.github.io/kaist-cs492d-fall-2024/">Diffusion Models and Their Applications (CS492-D)</a>, KAIST</li>
-          <li>Teaching Assistant, Fall 2023, <a href="https://mhsung.github.io/kaist-cs479-fall-2023/">Machine Learning for 3D Data (CS479)</a>, KAIST</li>
-        </ul>
-      </div>
-
-      <div class="block" id="academic-services">
-        <h2>Academic Services</h2>
-
-        <ul>
-          <li><b>Reviewer:</b> NeurIPS (2024, 2025), ICLR (2025, 2026), ICML (2025), ICCV Workshop (<a href="https://sp4v.github.io/technical_committee.html">SP4V</a>, 2025), 3DV (2026), AAAI (2026), TPAMI (2025), Eurographics (2026)</li>
-          <li><b>Workshop Organizer:</b> <a href="https://musi-workshop.github.io/">2nd Workshop on Multimodal Spatial Intelligence (MUSI)</a> at CVPR 2026</li>
-        </ul>
-      </div>
-
-      <div class="block" id="achievements">
-        <h2>Achievements</h2>
-
-        <ul>
-          <li>Recipient of <a href="https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-south-korea">Qualcomm Innovation Fellowship Korea 2025</a></li>
-          <li><a href="https://x.com/icmlconf/status/2054696826851234151">Gold Reviewer</a> of ICML2 2026</li>
-        </ul>
-      </div>
-
-      <p class="footnote"><small>Powered by Jekyll and <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">Minimal Light</a> theme.</small></p>
-
-      </section>
-      <footer>
-
-      </footer>
+<section id="work">
+  <h2>Work experience</h2>
+  <div class="job">
+    <img src="https://phillipinseoul.github.io/assets/img/google_logo.png" alt="Google">
+    <div>
+      <p><strong>Student Researcher</strong>, <a href="https://deepmind.google/">Google DeepMind</a> (Mountain View, CA)</p>
+      <p class="when">May 2026 – Current (Host: <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>)</p>
     </div>
-    <script src="/assets/js/scale.fix.js"></script>
+  </div>
+</section>
 
-    <script>
-      function toggleOldNews() {
-        var oldNewsItems = document.querySelectorAll('.old-news');
-        var btn = document.getElementById('see-more-btn');
-        var isHidden = oldNewsItems[0].style.display === 'none';
+<section id="news">
+  <h2>News</h2>
+  <ul class="news" id="newslist">
+    <li><time>Jun 2026</time><span><a href="https://arxiv.org/abs/2511.21415">DiverseVAR</a> is accepted to <strong>ECCV 2026</strong>.</span></li>
+    <li><time>May 2026</time><span>I joined <strong>Google DeepMind (Mountain View)</strong> as a Student Researcher, hosted by <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>.</span></li>
+    <li><time>Feb 2026</time><span><a href="https://token-warping-mllm.github.io/">Token Warping</a> is accepted to <strong>CVPR 2026</strong>.</span></li>
+    <li><time>Feb 2026</time><span>I am co-hosting the <a href="https://musi-workshop.github.io/">2nd Workshop on Multimodal Spatial Intelligence (MUSI)</a> at CVPR 2026.</span></li>
+    <li><time>Nov 2025</time><span>I won the <a href="https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-south-korea">Qualcomm Innovation Fellowship Korea 2025</a> with our APC (ICCV 2025) paper.</span></li>
+    <li><time>Sep 2025</time><span><a href="https://arxiv.org/abs/2503.20240">Unconditional Priors</a> is accepted to <strong>WACV 2026</strong>.</span></li>
+    <li class="more"><time>Jun 2025</time><span><a href="https://arxiv.org/abs/2504.17207">Perspective-Aware Reasoning (APC)</a> is accepted to <strong>ICCV 2025</strong>.</span></li>
+    <li class="more"><time>Nov 2024</time><span>I successfully defended my Masters thesis on <em>"Spatial Grounding with Pretrained Image Diffusion Models"</em>. Slides are available <a href="https://drive.google.com/file/d/1pJmHFX-0GfwhgBg4I9hHRUhMTZ2V-WzW/view?usp=drive_link">here</a>.</span></li>
+    <li class="more"><time>Oct 2024</time><span>I gave an oral presentation on ReGround at <a href="https://sites.google.com/view/u-and-me-workshop/home/">U&amp;ME Workshop</a> in ECCV 2024. Slides are available <a href="https://drive.google.com/file/d/1CUevPt-1NAwowoB4rBnd2WrMdCcWELGs/view?usp=drive_link">here</a>.</span></li>
+    <li class="more"><time>Sep 2024</time><span><a href="https://groundit-diffusion.github.io/">GrounDiT</a> is accepted to <strong>NeurIPS 2024</strong>.</span></li>
+    <li class="more"><time>Jul 2024</time><span><a href="https://re-ground.github.io/">ReGround</a> is accepted to <strong>ECCV 2024</strong>.</span></li>
+    <li class="more"><time>May 2024</time><span><a href="https://syncdiffusion.github.io/">SyncDiffusion</a> is featured in <a href="https://www.kaist.ac.kr/kr/html/kaist/010504.html">KAIST Annual R&amp;D Report</a> as a Research Highlight of 2023.</span></li>
+    <li class="more"><time>Dec 2023</time><span>I gave a spotlight presentation on SyncDiffusion at <a href="https://neuripscreativityworkshop.github.io/2023/">ML4CD Workshop</a> in NeurIPS 2023 and also presented at <a href="https://diffusionworkshop.github.io/">Workshop on Diffusion Models</a>. Slides are available <a href="https://docs.google.com/presentation/d/1WH8XiBVTJmlosvBkcH_58Al5j4pffpSl/edit?usp=drive_link&ouid=118041686998471171133&rtpof=true&sd=true">here</a>.</span></li>
+    <li class="more"><time>Sep 2023</time><span><a href="https://syncdiffusion.github.io/">SyncDiffusion</a> is accepted to <strong>NeurIPS 2023</strong>.</span></li>
+    <li class="more"><time>Aug 2023</time><span>Started Master's Program at <a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a>. (Advisor: Prof. Minhyuk Sung)</span></li>
+  </ul>
+  <button class="toggle" id="newstoggle" type="button" aria-expanded="false" aria-controls="newslist">Show all news</button>
+</section>
 
-        oldNewsItems.forEach(function(item) {
-          item.style.display = isHidden ? 'list-item' : 'none';
-        });
-        btn.textContent = isHidden ? '[ see less ]' : '[ see more ]';
-      }
-    </script>
+<section id="publications">
+  <h2>Publications</h2>
+  <ol class="pubs">
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/hidden_sensitivity_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>Hidden Sensitivity in Spatial Reasoning Evaluation: Diagnosis and Re-ranking with VSI-Bench</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee</span>, Jin Yoo, Minseo Kim, <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>Combining Theory and Benchmark (CTB) Workshop at ICML 2026</em></p>
+        <div class="pl"><a href="https://openreview.net/pdf?id=veFSwiJogR">PDF</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/token-warping-thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>Token Warping Helps MLLMs Look from Nearby Viewpoints</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee*</span>, <a href="https://charlieppark.kr/">Chanho Park*</a>, <a href="https://uygnim99.github.io/">Mingue Park</a>, <a href="https://dvelopery0115.github.io/">Seungwoo Yoo</a>, <a href="https://63days.github.io/">Juil Koo</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>CVPR 2026</em></p>
+        <div class="pl"><a href="https://token-warping-mllm.github.io/">Project</a><a href="https://arxiv.org/abs/2604.02870">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/vgavs.png" alt="" loading="lazy">
+      <div>
+        <h3>Toward Ambulatory Vision: Learning Visually-Grounded Active View Selection</h3>
+        <p class="authors"><a href="https://63days.github.io/">Juil Koo*</a>, <a href="https://choidaedae.github.io/">Daehyeon Choi*</a>, <a href="https://sang-w00.github.io/">Sangwoo Youn*</a>, <span class="me">Phillip Y. Lee</span>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>Reinforcement Learning from World Feedback (RLxF) Workshop at ICML 2026</em></p>
+        <div class="pl"><a href="https://active-view-selection.github.io/">Project</a><a href="https://arxiv.org/pdf/2512.13250">PDF</a><a href="https://arxiv.org/abs/2512.13250">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/diversevar_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>DiverseVAR: Balancing Diversity and Quality of Next-Scale Visual Autoregressive Models</h3>
+        <p class="authors">Mingue Park*, <a href="https://scholar.google.com/citations?user=mmNOk74AAAAJ&hl=en">Prin Phunyaphibarn*</a>, <span class="me">Phillip Y. Lee</span>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>ECCV 2026</em></p>
+        <div class="pl"><a href="https://arxiv.org/abs/2511.21415">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/unconditional_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>Unconditional Priors Matter! Improving Conditional Generation of Fine-Tuned Diffusion Models</h3>
+        <p class="authors"><a href="https://scholar.google.com/citations?user=mmNOk74AAAAJ&hl=en">Prin Phunyaphibarn</a>, <span class="me">Phillip Y. Lee</span>, <a href="https://jh27kim.github.io/">Jaihoon Kim</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>WACV 2026</em></p>
+        <div class="pl"><a href="https://unconditional-priors-matter.github.io/">Project</a><a href="https://unconditional-priors-matter.github.io/static/unconditional-priors-matter.pdf">PDF</a><a href="https://arxiv.org/abs/2503.20240">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/apc_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>Perspective-Aware Reasoning in Vision-Language Models via Mental Imagery Simulation</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee</span>, <a href="https://jihyeonje.com/">Jihyeon Je</a>, <a href="https://charlieppark.kr/">Chanho Park</a>, <a href="https://mikacuy.github.io/">Mikaela Angelina Uy</a>, <a href="https://geometry.stanford.edu/?member=guibas">Leonidas Guibas</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>ICCV 2025 / Human to Robot (H2R) Workshop at CoRL 2025</em></p>
+        <div class="pl"><a href="https://apc-vlm.github.io/">Project</a><a href="https://apc-vlm.github.io/static/Perspective_Aware_Reasoning_Preprint.pdf">PDF</a><a href="https://arxiv.org/abs/2504.17207">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/groundit_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>GrounDiT: Grounding Diffusion Transformers via Noisy Patch Transplantation</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee*</span>, <a href="https://github.com/taehoon-yoon/">Taehoon Yoon*</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>NeurIPS 2024</em></p>
+        <div class="pl"><a href="https://groundit-diffusion.github.io/">Project</a><a href="https://groundit-diffusion.github.io/static/groundit_paper.pdf">PDF</a><a href="https://arxiv.org/abs/2410.20474/">arXiv</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/reground_thumbnail.png" alt="" loading="lazy">
+      <div>
+        <h3>ReGround: Improving Textual and Spatial Grounding at No Cost</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee</span>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>ECCV 2024</em></p>
+        <div class="pl"><a href="https://re-ground.github.io/">Project</a><a href="https://re-ground.github.io/static/reground_paper.pdf">PDF</a><a href="https://arxiv.org/abs/2403.13589/">arXiv</a><a href="https://phillipinseoul.github.io/assets/reground_bibtex.txt">BibTex</a><a href="https://drive.google.com/file/d/1CUevPt-1NAwowoB4rBnd2WrMdCcWELGs/view">Slides</a></div>
+      </div>
+    </li>
+    <li class="pub">
+      <img src="https://phillipinseoul.github.io/assets/img/syncdiffusion_thumbnail_v2.png" alt="" loading="lazy">
+      <div>
+        <h3>SyncDiffusion: Coherent Montage via Synchronized Joint Diffusions</h3>
+        <p class="authors"><span class="me">Phillip Y. Lee</span>, <a href="https://soulmates2.github.io/">Kunho Kim</a>, <a href="https://kormachine.github.io/">Hyunjin Kim</a>, <a href="https://mhsung.github.io/">Minhyuk Sung</a></p>
+        <p class="venue"><em>NeurIPS 2023</em></p>
+        <div class="pl"><a href="https://syncdiffusion.github.io/">Project</a><a href="https://syncdiffusion.github.io/static/syncdiffusion_pdf.pdf">PDF</a><a href="https://arxiv.org/abs/2306.05178/">arXiv</a><a href="https://github.com/KAIST-Geometric-AI-Group/SyncDiffusion/">Code</a><a href="https://phillipinseoul.github.io/assets/syncdiffusion_bibtex.txt">BibTex</a><a href="https://huggingface.co/spaces/KAIST-Visual-AI-Group/syncdiffusion-demo/">Demo</a><a href="https://neurips.cc/virtual/2023/81374/">Talk</a></div>
+      </div>
+    </li>
+  </ol>
+</section>
 
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-111540567-4', 'auto');
-      ga('send', 'pageview');
-    </script>
+<section id="teaching">
+  <h2>Teaching</h2>
+  <ul class="plain">
+    <li>Teaching Assistant, Fall 2025, <a href="https://diffusion.kaist.ac.kr/">Diffusion and Flow Models (CS492-C)</a>, KAIST</li>
+    <li>Teaching Assistant, Spring 2025, <a href="https://mhsung.github.io/kaist-cs479-spring-2025/">Machine Learning for 3D Data (CS479)</a>, KAIST</li>
+    <li>Teaching Assistant, Fall 2024, <a href="https://mhsung.github.io/kaist-cs492d-fall-2024/">Diffusion Models and Their Applications (CS492-D)</a>, KAIST</li>
+    <li>Teaching Assistant, Fall 2023, <a href="https://mhsung.github.io/kaist-cs479-fall-2023/">Machine Learning for 3D Data (CS479)</a>, KAIST</li>
+  </ul>
+</section>
 
-  </body>
+<section id="service">
+  <h2>Academic services</h2>
+  <ul class="plain">
+    <li><strong>Reviewer:</strong> NeurIPS (2024, 2025), ICLR (2025, 2026), ICML (2025), ICCV Workshop (<a href="https://sp4v.github.io/technical_committee.html">SP4V</a>, 2025), 3DV (2026), AAAI (2026), TPAMI (2025), Eurographics (2026)</li>
+    <li><strong>Workshop Organizer:</strong> <a href="https://musi-workshop.github.io/">2nd Workshop on Multimodal Spatial Intelligence (MUSI)</a> at CVPR 2026</li>
+  </ul>
+</section>
+
+<section id="achievements">
+  <h2>Achievements</h2>
+  <ul class="plain">
+    <li>Recipient of <a href="https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-south-korea">Qualcomm Innovation Fellowship Korea 2025</a></li>
+    <li><a href="https://x.com/icmlconf/status/2054696826851234151">Gold Reviewer</a> of ICML 2026</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>© 2026 Phillip Y. Lee</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- news toggle ---------- */
+(function(){
+  const list=document.getElementById('newslist'), btn=document.getElementById('newstoggle');
+  const n=list.querySelectorAll('.more').length;
+  btn.textContent='Show all news ('+n+' more)';
+  btn.addEventListener('click',()=>{
+    const open=list.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open);
+    btn.textContent=open?'Show fewer':'Show all news ('+n+' more)';
+  });
+})();
+
+/* ---------- embodied robot room ---------- */
+(function(){
+const stage=document.getElementById('stage');
+const insetEl=document.getElementById('inset');
+const ansEl=document.getElementById('answer'), ansSr=document.getElementById('answer-sr');
+const buttons=[...document.querySelectorAll('#ask button')];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function fail(){stage.classList.add('nogl');}
+if(!window.THREE){fail();return;}
+let renderer;
+try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(e){fail();return;}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+stage.insertBefore(renderer.domElement,stage.firstChild);
+const canvas=renderer.domElement;
+
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(30,1.6,0.1,100);
+const camTarget=new THREE.Vector3(0,0.7,0);
+let camAz=0.72, camEl=0.62, camDist=17;
+function placeCam(){
+  cam.position.set(
+    camTarget.x+camDist*Math.cos(camEl)*Math.sin(camAz),
+    camTarget.y+camDist*Math.sin(camEl),
+    camTarget.z+camDist*Math.cos(camEl)*Math.cos(camAz));
+  cam.lookAt(camTarget);
+}
+
+/* lights */
+scene.add(new THREE.HemisphereLight(0xffffff,0xd8cfc0,0.62));
+scene.add(new THREE.AmbientLight(0xffffff,0.14));
+const sun=new THREE.DirectionalLight(0xffffff,0.78);
+sun.position.set(6,10,5);
+sun.castShadow=true;
+const sm=window.innerWidth<700?1024:2048;
+sun.shadow.mapSize.set(sm,sm);
+Object.assign(sun.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:1,far:30});
+sun.shadow.bias=-0.0006;
+scene.add(sun);
+
+/* helpers */
+const MC={};
+function mat(c,o){const k=c+'|'+JSON.stringify(o||{});if(!MC[k])MC[k]=new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.85,metalness:0},o||{}));return MC[k];}
+function mesh(geo,m,x,y,z,parent){const me=new THREE.Mesh(geo,typeof m==='number'?mat(m):m);me.position.set(x||0,y||0,z||0);me.castShadow=true;me.receiveShadow=true;(parent||scene).add(me);return me;}
+function rbox(w,h,d,r){
+  r=Math.min(r||0.05,w/2-0.002,h/2-0.002,d/2-0.002);
+  const s=new THREE.Shape(),e=0.00001,rad=r-e;
+  s.absarc(e,e,e,-Math.PI/2,-Math.PI,true);
+  s.absarc(e,h-rad*2,e,Math.PI,Math.PI/2,true);
+  s.absarc(w-rad*2,h-rad*2,e,Math.PI/2,0,true);
+  s.absarc(w-rad*2,e,e,0,-Math.PI/2,true);
+  const g=new THREE.ExtrudeGeometry(s,{depth:d-r*2,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:rad,bevelThickness:r,curveSegments:4});
+  g.center();return g;
+}
+const cyl=(rt,rb,h,s)=>new THREE.CylinderGeometry(rt,rb,h,s||20);
+const sph=(r)=>new THREE.SphereGeometry(r,24,16);
+
+/* room shell */
+mesh(rbox(8,0.3,8,0.08),0xE7D7BF,0,-0.15,0);
+for(let i=-3;i<=3;i++){const p=mesh(new THREE.BoxGeometry(0.012,0.002,8),0xD9C6AA,i,0.001,0);p.castShadow=false;}
+const backWall=mesh(new THREE.BoxGeometry(8.2,3.3,0.2),0xE6EBF2,-0.1,1.35,-4.1);
+const leftWall=mesh(new THREE.BoxGeometry(0.2,3.3,8),0xDDE3EC,-4.1,1.35,0);
+backWall.castShadow=leftWall.castShadow=false;
+mesh(new THREE.BoxGeometry(8,0.12,0.04),0xFFFFFF,0,0.06,-3.98);
+mesh(new THREE.BoxGeometry(0.04,0.12,8),0xFFFFFF,-3.98,0.06,0);
+
+/* window */
+const win=new THREE.Group();win.position.set(2.5,1.75,-3.99);scene.add(win);
+const glass=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.1),new THREE.MeshBasicMaterial({color:0xBFE0FA}));glass.position.z=0.005;win.add(glass);
+[[1.62,0.07,0,0.585],[1.62,0.07,0,-0.585],[0.07,1.24,0.785,0],[0.07,1.24,-0.785,0],[0.04,1.1,0,0],[1.5,0.04,0,0]].forEach(b=>mesh(new THREE.BoxGeometry(b[0],b[1],0.05),0xFFFFFF,b[2],b[3],0.02,win));
+mesh(new THREE.BoxGeometry(1.75,0.05,0.16),0xFFFFFF,0,-0.64,0.07,win);
+
+/* picture above sofa */
+const pic=new THREE.Group();pic.position.set(-0.5,2.05,-3.98);scene.add(pic);
+mesh(rbox(1.1,0.72,0.05,0.02),0xFFFFFF,0,0,0.02,pic);
+mesh(new THREE.BoxGeometry(0.95,0.57,0.01),0xF7F4EE,0,0,0.05,pic);
+mesh(new THREE.CircleGeometry(0.15,32),0x2E55E6,-0.18,0.04,0.056,pic);
+mesh(new THREE.BoxGeometry(0.3,0.22,0.01),0xF2B84B,0.17,-0.06,0.056,pic);
+
+/* rug */
+const rug=mesh(cyl(1,1,0.02,48),0xF3C6AE,-0.5,0.01,-1.15);rug.scale.set(1.55,1,1.05);rug.castShadow=false;
+
+/* sofa */
+const sofa=new THREE.Group();sofa.position.set(-0.5,0,-3.35);scene.add(sofa);
+const SB=0x5A77D8,SC=0x6C88E2;
+mesh(rbox(2.6,0.4,0.95,0.08),SB,0,0.3,0,sofa);
+mesh(rbox(2.6,0.78,0.28,0.1),SB,0,0.62,-0.34,sofa);
+mesh(rbox(0.26,0.62,0.95,0.1),SB,-1.17,0.41,0,sofa);
+mesh(rbox(0.26,0.62,0.95,0.1),SB,1.17,0.41,0,sofa);
+mesh(rbox(1.03,0.16,0.7,0.07),SC,-0.53,0.56,0.08,sofa);
+mesh(rbox(1.03,0.16,0.7,0.07),SC,0.53,0.56,0.08,sofa);
+mesh(rbox(1.0,0.46,0.18,0.08),SC,-0.53,0.84,-0.16,sofa);
+mesh(rbox(1.0,0.46,0.18,0.08),SC,0.53,0.84,-0.16,sofa);
+const pillow=mesh(rbox(0.36,0.32,0.12,0.06),0xF2B84B,0.78,0.8,-0.02,sofa);pillow.rotation.z=0.18;
+[[-1.2,-0.4],[1.2,-0.4],[-1.2,0.4],[1.2,0.4]].forEach(p=>mesh(cyl(0.035,0.025,0.1),0x6E5038,p[0],0.05,p[1],sofa));
+
+/* coffee table + mug */
+const table=new THREE.Group();table.position.set(-0.5,0,-1.1);scene.add(table);
+mesh(rbox(1.3,0.08,0.7,0.03),0xC99A6A,0,0.44,0,table);
+[[-0.56,-0.27],[0.56,-0.27],[-0.56,0.27],[0.56,0.27]].forEach(p=>mesh(cyl(0.035,0.03,0.42),0xA97B4F,p[0],0.21,p[1],table));
+const MUG=new THREE.Vector3(-0.25,0.545,-0.95);
+const mug=new THREE.Group();mug.position.copy(MUG);scene.add(mug);
+mesh(cyl(0.065,0.058,0.13),0xE2574C,0,0,0,mug);
+const handle=mesh(new THREE.TorusGeometry(0.038,0.012,8,16),0xE2574C,0.068,0,0,mug);
+mesh(cyl(0.056,0.056,0.005),0x6B4029,0,0.06,0,mug);
+
+/* bookshelf (against left wall, opening faces +x) */
+const shelf=new THREE.Group();shelf.position.set(-3.72,0,0.6);scene.add(shelf);
+const SW=0xEDE6DA;
+mesh(new THREE.BoxGeometry(0.46,2.2,0.05),SW,0,1.1,0.775,shelf);
+mesh(new THREE.BoxGeometry(0.46,2.2,0.05),SW,0,1.1,-0.775,shelf);
+mesh(new THREE.BoxGeometry(0.03,2.2,1.6),0xE2D9CA,-0.215,1.1,0,shelf);
+[0.04,0.6,1.16,1.72,2.18].forEach(y=>mesh(new THREE.BoxGeometry(0.46,0.04,1.55),SW,0,y,0,shelf));
+function book(h,t,z,c,y,tilt){const b=mesh(new THREE.BoxGeometry(0.3,h,t),c,0,y+h/2,z,shelf);if(tilt)b.rotation.x=tilt;return b;}
+// top shelf: exactly 5 books, the tall red one on the robot's left (+z)
+book(0.44,0.09,0.62,0xD9534F,1.74);
+book(0.32,0.07,0.5,0x2E55E6,1.74);
+book(0.36,0.08,0.4,0xF2B84B,1.74);
+book(0.3,0.07,0.3,0x4FA37A,1.74);
+book(0.34,0.075,0.12,0x8A7FD1,1.74,0.22);
+// middle shelves
+book(0.38,0.08,0.55,0x4FA37A,1.18);book(0.34,0.07,0.45,0xF7F4EE,1.18);book(0.36,0.08,0.35,0x2E55E6,1.18,0.18);
+mesh(cyl(0.09,0.07,0.14),0xFFFFFF,0,1.25,-0.4,shelf);mesh(sph(0.1),0x63B37F,0,1.38,-0.4,shelf);
+[0,1,2].forEach(i=>mesh(new THREE.BoxGeometry(0.28,0.05,0.34),[0xF2B84B,0xD9534F,0x8A7FD1][i],0,0.645+i*0.05,0.35,shelf));
+mesh(rbox(0.3,0.2,0.36,0.03),0xC99A6A,0,0.72,-0.35,shelf);
+mesh(rbox(0.34,0.3,0.55,0.05),0xD8C3A0,0,0.21,0.35,shelf);
+mesh(rbox(0.34,0.3,0.55,0.05),0xD8C3A0,0,0.21,-0.35,shelf);
+
+/* plant */
+const plant=new THREE.Group();plant.position.set(-2.55,0,-3.3);scene.add(plant);
+mesh(cyl(0.22,0.17,0.4),0xFFFFFF,0,0.2,0,plant);
+mesh(cyl(0.223,0.21,0.06),0x2E55E6,0,0.3,0,plant);
+mesh(cyl(0.2,0.2,0.02),0x6B4A33,0,0.395,0,plant);
+for(let i=0;i<8;i++){
+  const a=i/8*Math.PI*2,lean=0.35+(i%3)*0.12;
+  const leaf=mesh(sph(0.16),i%2?0x4E9F6E:0x63B37F,Math.sin(a)*0.16,0.78+(i%3)*0.12,Math.cos(a)*0.16,plant);
+  leaf.scale.set(0.45,1.5,0.22);leaf.rotation.set(Math.cos(a)*lean,a,-Math.sin(a)*lean);
+}
+
+/* floor lamp */
+const lamp=new THREE.Group();lamp.position.set(1.55,0,-3.4);scene.add(lamp);
+mesh(cyl(0.2,0.22,0.04),0x2B3348,0,0.02,0,lamp);
+mesh(cyl(0.018,0.018,1.5),0x2B3348,0,0.77,0,lamp);
+mesh(cyl(0.17,0.28,0.32,28),new THREE.MeshStandardMaterial({color:0xFFF4DA,emissive:0xFFD98A,emissiveIntensity:.55,side:THREE.DoubleSide,roughness:.9}),0,1.58,0,lamp);
+const bulb=new THREE.PointLight(0xFFD9A0,0.45,4.5);bulb.position.set(0,1.45,0);lamp.add(bulb);
+
+/* armchair (faces -x, toward the table) */
+const chair=new THREE.Group();chair.position.set(2.3,0,0.9);chair.rotation.y=-Math.PI/2;scene.add(chair);
+const AC=0xF2B84B,AK=0xF6C868;
+mesh(rbox(0.92,0.36,0.86,0.08),AC,0,0.3,0,chair);
+mesh(rbox(0.92,0.78,0.22,0.09),AC,0,0.66,-0.33,chair);
+mesh(rbox(0.18,0.52,0.86,0.08),AC,-0.37,0.44,0,chair);
+mesh(rbox(0.18,0.52,0.86,0.08),AC,0.37,0.44,0,chair);
+mesh(rbox(0.56,0.14,0.6,0.06),AK,0,0.53,0.06,chair);
+[[-0.38,-0.35],[0.38,-0.35],[-0.38,0.35],[0.38,0.35]].forEach(p=>mesh(cyl(0.03,0.022,0.12),0x6E5038,p[0],0.06,p[1],chair));
+
+/* sleepy cat, behind the armchair */
+const cat=new THREE.Group();cat.position.set(3.3,0,0.9);cat.rotation.y=0.4;scene.add(cat);
+const CO=0xEE9A5B;
+const catBody=mesh(sph(0.2),CO,0,0.11,0,cat);catBody.scale.set(1.15,0.55,0.8);
+mesh(sph(0.11),CO,-0.17,0.13,0.08,cat);
+[[-0.21,0.04],[-0.13,0.13]].forEach(p=>{const e=mesh(new THREE.ConeGeometry(0.04,0.08,12),CO,p[0],0.24,0.08+p[1]-0.08,cat);e.rotation.z=0.2;});
+const tail=mesh(new THREE.TorusGeometry(0.17,0.035,8,24,Math.PI*1.1),0xE08A4C,0.02,0.05,0.02,cat);tail.rotation.x=Math.PI/2;tail.rotation.z=0.6;
+[[-0.24,0.06],[-0.2,0.15]].forEach(p=>mesh(new THREE.BoxGeometry(0.035,0.006,0.01),0x3A2A20,p[0],0.15,p[1],cat).rotation.y=Math.PI/2.4);
+
+/* ---------- navigation grid ---------- */
+const OBST=[
+  [-1.82,0.82,-3.9,-2.85],   // sofa
+  [-1.18,0.18,-1.47,-0.73],  // table
+  [-3.98,-3.47,-0.22,1.42],  // shelf
+  [-2.8,-2.3,-3.56,-3.04],   // plant
+  [1.32,1.78,-3.62,-3.18],   // lamp
+  [1.84,2.76,0.42,1.38],     // armchair
+  [3.02,3.6,0.68,1.12]       // cat
+];
+const N=40,CS=0.2,INF=0.36,LIM=3.55;
+const blocked=new Uint8Array(N*N);
+const cc=i=>-4+(i+0.5)*CS;
+function blockedAt(x,z){
+  if(Math.abs(x)>LIM||Math.abs(z)>LIM)return true;
+  for(const o of OBST)if(x>o[0]-INF&&x<o[1]+INF&&z>o[2]-INF&&z<o[3]+INF)return true;
+  return false;
+}
+for(let i=0;i<N;i++)for(let j=0;j<N;j++)blocked[i*N+j]=blockedAt(cc(i),cc(j))?1:0;
+const toCell=v=>Math.max(0,Math.min(N-1,Math.floor((v+4)/CS)));
+function nearestFree(i,j){
+  if(!blocked[i*N+j])return [i,j];
+  for(let r=1;r<N;r++)for(let a=-r;a<=r;a++)for(let b=-r;b<=r;b++){
+    if(Math.max(Math.abs(a),Math.abs(b))!==r)continue;
+    const x=i+a,y=j+b;if(x<0||y<0||x>=N||y>=N)continue;
+    if(!blocked[x*N+y])return [x,y];
+  }
+  return [i,j];
+}
+function lineFree(ax,az,bx,bz){
+  const d=Math.hypot(bx-ax,bz-az),n=Math.ceil(d/0.08);
+  for(let k=0;k<=n;k++){const t=k/n,x=ax+(bx-ax)*t,z=az+(bz-az)*t;if(blocked[toCell(x)*N+toCell(z)])return false;}
+  return true;
+}
+function findPath(sx,sz,gx,gz){
+  const s=nearestFree(toCell(sx),toCell(sz)),g=nearestFree(toCell(gx),toCell(gz));
+  const S=s[0]*N+s[1],G=g[0]*N+g[1];
+  const gs=new Float32Array(N*N).fill(1e9),from=new Int32Array(N*N).fill(-1),closed=new Uint8Array(N*N);
+  const open=[S];gs[S]=0;
+  const h=k=>{const dx=Math.abs((k/N|0)-g[0]),dz=Math.abs(k%N-g[1]);return Math.max(dx,dz)+0.414*Math.min(dx,dz);};
+  while(open.length){
+    let bi=0;for(let k=1;k<open.length;k++)if(gs[open[k]]+h(open[k])<gs[open[bi]]+h(open[bi]))bi=k;
+    const c=open.splice(bi,1)[0];if(c===G)break;closed[c]=1;
+    const ci=c/N|0,cj=c%N;
+    for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){
+      if(!a&&!b)continue;const x=ci+a,y=cj+b;if(x<0||y<0||x>=N||y>=N)continue;
+      const k=x*N+y;if(blocked[k]||closed[k])continue;
+      if(a&&b&&(blocked[ci*N+y]||blocked[x*N+cj]))continue;
+      const ng=gs[c]+(a&&b?1.414:1);
+      if(ng<gs[k]){gs[k]=ng;from[k]=c;if(!open.includes(k))open.push(k);}
+    }
+  }
+  if(G!==S&&from[G]<0)return null;
+  const pts=[];for(let k=G;k!==-1&&k!==S;k=from[k])pts.unshift([cc(k/N|0),cc(k%N)]);
+  const fx=blockedAt(gx,gz)?cc(g[0]):gx,fz=blockedAt(gx,gz)?cc(g[1]):gz;
+  pts.push([fx,fz]);
+  const out=[];let cx=sx,cz=sz,i=0;
+  while(i<pts.length){let j=pts.length-1;while(j>i&&!lineFree(cx,cz,pts[j][0],pts[j][1]))j--;out.push(pts[j]);cx=pts[j][0];cz=pts[j][1];i=j+1;}
+  return out;
+}
+
+/* ---------- robot ---------- */
+const robot=new THREE.Group();robot.position.set(0.9,0,1.8);scene.add(robot);
+let yaw=-2.4;robot.rotation.y=yaw;
+const RW=0xF7F8FB;
+const bodyG=new THREE.Group();robot.add(bodyG);
+const torso=mesh(sph(0.27),RW,0,0.36,0,bodyG);torso.scale.set(1,0.92,0.95);
+mesh(new THREE.CircleGeometry(0.07,24),0x2E55E6,0,0.36,0.256,bodyG);
+const wheels=[-0.22,0.22].map(x=>{const w=mesh(cyl(0.1,0.1,0.07,20),0x2B3348,x,0.1,0,robot);w.rotation.z=Math.PI/2;return w;});
+mesh(cyl(0.05,0.06,0.08),0xD5DAE3,0,0.62,0,bodyG);
+const headYaw=new THREE.Group();headYaw.position.set(0,0.78,0);bodyG.add(headYaw);
+const headPitch=new THREE.Group();headYaw.add(headPitch);
+mesh(rbox(0.52,0.38,0.4,0.11),RW,0,0,0,headPitch);
+mesh(rbox(0.42,0.27,0.04,0.07),0x1B2236,0,0,0.19,headPitch);
+mesh(cyl(0.05,0.05,0.05),0x2E55E6,-0.27,0,0,headPitch).rotation.z=Math.PI/2;
+mesh(cyl(0.05,0.05,0.05),0x2E55E6,0.27,0,0,headPitch).rotation.z=Math.PI/2;
+mesh(cyl(0.008,0.008,0.18),0x9AA3B5,0,0.27,0,headPitch);
+const tip=mesh(sph(0.04),new THREE.MeshStandardMaterial({color:0xF2B84B,emissive:0xF2B84B,emissiveIntensity:.4}),0,0.37,0,headPitch);
+
+const faceCv=document.createElement('canvas');faceCv.width=256;faceCv.height=160;
+const fx=faceCv.getContext('2d');const faceTex=new THREE.CanvasTexture(faceCv);
+const facePlane=new THREE.Mesh(new THREE.PlaneGeometry(0.38,0.24),new THREE.MeshBasicMaterial({map:faceTex,transparent:true}));
+facePlane.position.z=0.212;headPitch.add(facePlane);
+function rr(x,y,w,h,r){fx.beginPath();fx.moveTo(x+r,y);fx.arcTo(x+w,y,x+w,y+h,r);fx.arcTo(x+w,y+h,x,y+h,r);fx.arcTo(x,y+h,x,y,r);fx.arcTo(x,y,x+w,y,r);fx.closePath();fx.fill();}
+let faceMode='idle',blinking=false,drawn='';
+function drawFace(){
+  const key=faceMode+blinking;if(key===drawn)return;drawn=key;
+  fx.clearRect(0,0,256,160);fx.fillStyle=fx.strokeStyle='#8EE6FF';fx.lineWidth=13;fx.lineCap='round';
+  const xs=[86,170];
+  if(blinking){xs.forEach(x=>{fx.beginPath();fx.moveTo(x-18,82);fx.lineTo(x+18,82);fx.stroke();});}
+  else if(faceMode==='happy'){
+    xs.forEach(x=>{fx.beginPath();fx.arc(x,92,22,Math.PI*1.15,Math.PI*1.85);fx.stroke();});
+    fx.fillStyle='rgba(255,140,170,.55)';[56,200].forEach(x=>{fx.beginPath();fx.ellipse(x,112,16,9,0,0,Math.PI*2);fx.fill();});
+  }else if(faceMode==='think'){xs.forEach(x=>rr(x-14+10,48,28,40,13));}
+  else{xs.forEach(x=>rr(x-17,52,34,56,16));}
+  faceTex.needsUpdate=true;
+}
+drawFace();
+
+/* gaze cone + robot camera */
+const coneGeo=new THREE.ConeGeometry(1,1,28,1,true);coneGeo.translate(0,-0.5,0);coneGeo.rotateX(-Math.PI/2);
+const cone=new THREE.Mesh(coneGeo,new THREE.MeshBasicMaterial({color:0xF2B84B,transparent:true,opacity:0.17,depthWrite:false,side:THREE.DoubleSide}));
+cone.position.z=0.22;cone.visible=false;headPitch.add(cone);
+const rcam=new THREE.PerspectiveCamera(68,1.5,0.05,40);rcam.position.set(0,0.02,0.23);rcam.rotation.y=Math.PI;headPitch.add(rcam);
+
+/* highlight ring */
+const ring=new THREE.Mesh(new THREE.RingGeometry(0.4,0.48,48),new THREE.MeshBasicMaterial({color:0xF2B84B,transparent:true,opacity:0.95,depthWrite:false}));
+ring.rotation.x=-Math.PI/2;ring.position.y=0.02;ring.visible=false;scene.add(ring);
+let ringBase=1;
+function highlight(h){if(!h){ring.visible=false;return;}ring.position.x=h[0];ring.position.z=h[1];ringBase=h[2]/0.44;ring.visible=true;}
+
+/* ---------- task runner ---------- */
+const wrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+let queue=[],cur=null,idleT=0,idleDelay=2.5,moving=false;
+let hYaw=0,hPitch=0,hYawT=0,hPitchT=0.05;
+const say=(t,f)=>({k:'say',t,f});
+const go=(x,z)=>({k:'go',x,z});
+const look=(p,d,h)=>({k:'look',p,d,h});
+const wait=d=>({k:'wait',d});
+const call=fn=>({k:'call',fn});
+function run(list){queue=list;cur=null;cone.visible=false;highlight(null);idleT=0;}
+function eye(){return new THREE.Vector3().setFromMatrixPosition(headPitch.matrixWorld);}
+function turnBody(target,dt,rate){const d=wrap(target-yaw);const s=Math.sign(d)*Math.min(Math.abs(d),rate*dt);yaw=wrap(yaw+s);return Math.abs(d)-Math.abs(s);}
+
+function startTask(t){
+  t.time=0;
+  if(t.k==='go'){t.pts=findPath(robot.position.x,robot.position.z,t.x,t.z)||[];t.i=0;}
+  if(t.k==='look'){t.pt=typeof t.p==='function'?t.p():t.p;if(t.h)highlight(t.h);}
+  if(t.k==='face'){}
+}
+function stepTask(t,dt){
+  t.time+=dt;
+  switch(t.k){
+    case 'say':setAnswer(t.t);faceMode=t.f||'idle';return true;
+    case 'call':t.fn();return true;
+    case 'wait':return t.time>=t.d;
+    case 'face':hYawT=0;hPitchT=0.05;return turnBody(t.yaw,dt,4)<0.02;
+    case 'go':{
+      cone.visible=false;hYawT=0;hPitchT=0.06;
+      if(t.i>=t.pts.length){moving=false;return true;}
+      const p=t.pts[t.i],dx=p[0]-robot.position.x,dz=p[1]-robot.position.z,dist=Math.hypot(dx,dz);
+      if(dist<0.03){t.i++;return false;}
+      const rem=turnBody(Math.atan2(dx,dz),dt,5.5);
+      if(rem<0.5){const s=Math.min(dist,1.6*dt);robot.position.x+=dx/dist*s;robot.position.z+=dz/dist*s;moving=true;
+        wheels.forEach(w=>w.rotation.x+=s/0.1);}
+      else moving=false;
+      return false;
+    }
+    case 'look':{
+      const e=eye(),p=t.pt,dx=p.x-robot.position.x,dz=p.z-robot.position.z;
+      const rel=wrap(Math.atan2(dx,dz)-yaw);
+      if(Math.abs(rel)>1.2)turnBody(wrap(yaw+rel-Math.sign(rel)*1.2),dt,3);
+      hYawT=clamp(rel,-1.2,1.2);
+      const hd=Math.hypot(p.x-e.x,p.z-e.z);
+      hPitchT=clamp(-Math.atan2(p.y-e.y,hd),-0.7,0.75);
+      const L=e.distanceTo(p);cone.visible=true;cone.scale.set(L*0.38,L*0.38,L);
+      return t.time>=t.d;
+    }
+  }
+  return true;
+}
+
+/* ---------- answers ---------- */
+let typer=null;
+function setAnswer(text){
+  ansSr.textContent=text;clearInterval(typer);
+  if(reduce){ansEl.textContent=text;return;}
+  let i=0;ansEl.textContent='';
+  typer=setInterval(()=>{i+=2;ansEl.textContent=text.slice(0,i);if(i>=text.length)clearInterval(typer);},16);
+}
+function done(){idleDelay=9;}
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const P={
+  mug:MUG.clone(), plant:V(-2.55,0.85,-3.3), window:V(2.5,1.75,-3.95),
+  lampShade:V(1.55,1.55,-3.4), chair:V(2.3,0.6,0.9), cat:V(3.3,0.13,0.9),
+  booksL:V(-3.7,1.95,1.15), booksR:V(-3.7,1.95,0.05), books:V(-3.7,1.95,0.6), pic:V(-0.5,2.05,-3.98)
+};
+const Q={
+  mug:()=>[say("Going to check the coffee table…",'think'),go(-0.2,-0.15),
+    look(P.mug,1.5,[-0.25,-0.95,0.28]),
+    say("A red mug, sitting near the edge closest to me. Nothing else is on the table.",'happy'),call(done)],
+  plant:()=>[say("Let me take the sofa's point of view…",'think'),go(-0.5,-2.12),
+    {k:'face',yaw:0},say("Now I'm facing the same way the sofa faces.",'think'),wait(0.9),
+    look(P.plant,1.6,[-2.55,-3.3,0.45]),
+    say("On the sofa's right. From where you're watching it looks like the left side, but if you sat on the sofa facing the room, the plant would be by your right hand.",'happy'),call(done)],
+  books:()=>[say("Rolling over to the bookshelf…",'think'),go(-2.6,0.6),
+    look(P.booksL,0.8,[-3.72,0.6,0.95]),say("Counting… one, two, three…",'think'),look(P.booksR,1.1),
+    say("Five books on the top shelf. The tall red one on the far left is the biggest.",'happy'),call(done)],
+  window:()=>[say("Finding the window first…",'think'),go(2.0,-1.8),
+    look(P.window,1.0,[2.5,-3.75,0.7]),say("Now comparing the lamp and the armchair…",'think'),
+    look(P.lampShade,1.0,[1.55,-3.4,0.4]),look(P.chair,1.0,[2.3,0.9,0.7]),
+    say("The lamp. It's about 1.1 m from the window, while the armchair is about 4.9 m away.",'happy'),call(done)],
+  cat:()=>[say("Hmm, I don't see a cat from here…",'think'),look(P.chair,1.2),
+    say("Maybe it's hiding behind the armchair. I'll move to get a better view.",'think'),go(3.3,2.05),
+    look(P.cat,1.6,[3.3,0.9,0.42]),
+    say("Found it! The cat is napping behind the armchair. I couldn't see it from where I started, so I drove around the chair to look.",'happy'),call(done)]
+};
+buttons.forEach(b=>b.addEventListener('click',()=>{
+  buttons.forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  run(Q[b.dataset.q]());
+}));
+
+/* idle wandering */
+const wanderLooks=[P.mug,P.plant,P.window,P.books,P.lampShade,P.chair,P.pic];
+function wander(){
+  let x,z,tries=0;
+  do{x=(Math.random()*2-1)*3.2;z=(Math.random()*2-1)*3.2;tries++;}
+  while((blockedAt(x,z)||Math.hypot(x-robot.position.x,z-robot.position.z)<1.4)&&tries<40);
+  faceMode='idle';
+  queue=[go(x,z),look(wanderLooks[Math.random()*wanderLooks.length|0],1.6),wait(0.6)];
+}
+
+/* ---------- camera interaction + floor taps ---------- */
+let down=null,dragged=false;
+canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY,az:camAz,el:camEl,t:e.pointerType};dragged=false;});
+window.addEventListener('pointermove',e=>{
+  if(!down)return;const dx=e.clientX-down.x,dy=e.clientY-down.y;
+  if(Math.abs(dx)+Math.abs(dy)>6)dragged=true;
+  if(dragged){camAz=clamp(down.az-dx*0.006,0.12,1.45);if(down.t==='mouse')camEl=clamp(down.el+dy*0.004,0.36,1.1);placeCam();}
+});
+window.addEventListener('pointerup',e=>{if(down&&!dragged&&e.target===canvas)tap(e);down=null;});
+canvas.addEventListener('pointercancel',()=>{down=null;});
+const ray=new THREE.Raycaster(),ndc=new THREE.Vector2(),floor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+function tap(e){
+  const r=canvas.getBoundingClientRect(),ir=insetEl.getBoundingClientRect();
+  if(e.clientX>ir.left&&e.clientX<ir.right&&e.clientY>ir.top&&e.clientY<ir.bottom)return;
+  ndc.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(ndc,cam);const p=new THREE.Vector3();
+  if(!ray.ray.intersectPlane(floor,p)||Math.abs(p.x)>3.8||Math.abs(p.z)>3.8)return;
+  buttons.forEach(x=>x.setAttribute('aria-pressed','false'));
+  if(blockedAt(p.x,p.z)){setAnswer("Something's in the way there. Tap an open spot on the floor.");return;}
+  const side=s=>()=>{const a=yaw+s;return V(robot.position.x+Math.sin(a)*2,0.5,robot.position.z+Math.cos(a)*2);};
+  run([say("On my way.",'think'),go(p.x,p.z),look(side(0.9),0.9),look(side(-0.9),0.9),
+    say("Here's what I can see from this spot. Want to ask me something?",'happy'),call(done)]);
+  highlight([p.x,p.z,0.3]);
+}
+
+/* ---------- sizing ---------- */
+let W=1,H=1,inset={x:0,y:0,w:0,h:0};
+function resize(){
+  W=stage.clientWidth;H=stage.clientHeight;if(!W||!H)return;
+  renderer.setSize(W,H,false);
+  const a=W/H;cam.aspect=a;cam.fov=a<1?38:30;
+  camDist=15.5*Math.pow(Math.max(1,1.55/a),0.8);cam.updateProjectionMatrix();placeCam();
+  const iw=Math.round(Math.max(118,Math.min(240,W*0.3))),ih=Math.round(iw*0.66),m=12;
+  inset={x:W-iw-m,y:m,w:iw,h:ih};
+  Object.assign(insetEl.style,{width:iw+'px',height:ih+'px',right:m+'px',bottom:m+'px'});
+  rcam.aspect=iw/ih;rcam.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);resize();
+
+/* ---------- loop ---------- */
+let visible=true,last=performance.now(),blinkT=2+Math.random()*3,clock=0;
+new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible){last=performance.now();requestAnimationFrame(loop);}}).observe(stage);
+function loop(now){
+  if(!visible)return;
+  const dt=Math.min(0.05,(now-last)/1000);last=now;clock+=dt;
+
+  if(!cur&&queue.length){cur=queue.shift();startTask(cur);}
+  if(cur){
+    let guard=0;
+    while(cur&&stepTask(cur,dt)&&guard++<6){
+      if(cur.k==='look'){cone.visible=false;}
+      cur=queue.shift()||null;if(cur)startTask(cur);
+    }
+  }else{
+    moving=false;idleT+=dt;
+    hYawT=Math.sin(clock*0.6)*0.5;hPitchT=0.05+Math.sin(clock*0.37)*0.08;
+    if(idleT>idleDelay&&!reduce){idleT=0;idleDelay=2.5;highlight(null);wander();}
+  }
+
+  hYaw+=(hYawT-hYaw)*Math.min(1,dt*6);hPitch+=(hPitchT-hPitch)*Math.min(1,dt*6);
+  headYaw.rotation.y=hYaw;headPitch.rotation.x=hPitch;
+  robot.rotation.y=yaw;
+  bodyG.position.y=moving?Math.abs(Math.sin(clock*14))*0.018:Math.sin(clock*2)*0.006;
+  bodyG.rotation.x=moving?0.06:0;
+  tip.material.emissiveIntensity=faceMode==='think'?0.5+0.5*Math.sin(clock*9):0.35;
+
+  blinkT-=dt;
+  if(blinkT<=0){blinking=!blinking;blinkT=blinking?0.12:2+Math.random()*3.5;}
+  drawFace();
+  if(ring.visible){const s=ringBase*(1+0.08*Math.sin(clock*5));ring.scale.set(s,s,s);}
+  catBody.scale.y=0.55+Math.sin(clock*2.2)*0.025;
+
+  renderer.setScissorTest(false);renderer.setViewport(0,0,W,H);renderer.setClearColor(0x000000,0);
+  renderer.render(scene,cam);
+  const cv=cone.visible;cone.visible=false;
+  renderer.setScissorTest(true);renderer.setScissor(inset.x,inset.y,inset.w,inset.h);renderer.setViewport(inset.x,inset.y,inset.w,inset.h);
+  renderer.setClearColor(0xDCE6F2,1);renderer.render(scene,rcam);
+  cone.visible=cv;
+  requestAnimationFrame(loop);
+}
+placeCam();requestAnimationFrame(loop);
+})();
+</script>
+</body>
 </html>
