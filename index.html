@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Phillip Y. Lee | KAIST AI</title>
 <meta name="description" content="Phillip Y. Lee, PhD student at KAIST Graduate School of AI. Spatial understanding of multimodal foundation models and embodied agents.">
-<link rel="icon" media="(prefers-color-scheme:dark)" href="assets/img/favicon-dark.png" type="image/png">
-<link rel="icon" media="(prefers-color-scheme:light)" href="assets/img/favicon.png" type="image/png">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
@@ -18,16 +17,6 @@
   --body:"Public Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#141922; --ink:#E8ECF4; --muted:#9AA3B5; --line:#2A3243;
-    --accent:#8FA8FF; --stage:#1E2533; --panel:#1B212C;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#141922; --ink:#E8ECF4; --muted:#9AA3B5; --line:#2A3243;
-  --accent:#8FA8FF; --stage:#1E2533; --panel:#1B212C;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -69,7 +58,6 @@ img{max-width:100%}
   border-radius:999px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
 .ask button:hover{border-color:var(--accent)}
 .ask button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ask button[aria-pressed="true"]{color:#141922}}
 
 .reply{display:flex;gap:12px;align-items:flex-start}
 .reply svg{flex:0 0 40px;margin-top:2px}
@@ -177,7 +165,7 @@ footer{max-width:1180px;margin:0 auto;padding:24px 32px 48px;color:var(--muted);
 <section id="about" class="prose">
   <h2>About me</h2>
   <p>I am Phillip Lee, a second year PhD student at <a href="https://gsai.kaist.ac.kr/">KAIST Graduate School of AI</a>, advised by <a href="https://mhsung.github.io/">Prof. Minhyuk Sung</a>. I am also a student researcher at <a href="https://deepmind.google/"><img src="assets/img/google_logo.png" alt="" style="height:1em;width:auto;vertical-align:-0.15em;display:inline;margin:0 2px 0 1px">Google DeepMind</a>, Mountain View. I received both my Masters and Bachelors degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>. I am also fortunate to closely collaborate with <a href="https://geometry.stanford.edu/?member=guibas">Prof. Leonidas Guibas</a>. I am a recipient of <img src="assets/img/qualcomm_logo.png" alt="" style="height:1em;width:auto;vertical-align:-0.15em;display:inline;margin:0 2px 0 1px">Qualcomm Innovation Fellowship Korea 2025.</p>
-  <p>My research interests revolve around analyzing and enhancing the <strong>spatial understanding of multimodal foundation models</strong>, with the broader goal of building truly autonomous and embodied agents capable of operating in the physical world. Specifically, I have worked on advancing the 3D spatial reasoning capabilities of vision-language models (VLMs), and enhancing the spatial control of diffusion models.</p>
+  <p>My research interests revolve around analyzing and enhancing the <strong>spatial understanding of multimodal foundation models</strong>, with the broader goal of building truly autonomous and embodied agents capable of operating in the physical world. Specifically, I have worked on advancing the 3D spatial reasoning capabilities of vision-language models (VLMs) and building more robust evaluation systems for spatial intelligence. Previously, I have also worked on generative models for image and video generation.</p>
   <p>I am open to collaboration opportunities! Please feel free to contact me via email. My CV is at <a href="https://phillipinseoul.github.io/assets/files/CV_PhillipLee.pdf">Curriculum Vitae (CV)</a>.</p>
 </section>
 
